@@ -212,27 +212,27 @@ CONTINUE_GOOGLE = re.compile(r"(?i)\b(that|it|him|her|them|one|reply|draft|yes|y
 
 
 MEMORY_FILE = Path(__file__).resolve().parent / "memory.md"
-PARTY_FACE = HOME / "lil-token" / "avatar" / "party.rgb565"
-DEFAULT_FACE = HOME / "lil-token" / "avatar" / "default.rgb565"
+PARTY_FACE = Path(__file__).resolve().parents[1] / "avatar" / "party.rgb565"
+DEFAULT_FACE = Path(__file__).resolve().parents[1] / "avatar" / "default.rgb565"
 # Firecrawl lockup above the shades while it researches (avatar/make_research.py).
 # Music may start a dance at most once per this many seconds after any dance ends.
 MUSIC_DANCE_GAP_S = int(os.environ.get("LILTOKEN_MUSIC_DANCE_GAP_S", "1800"))
 # Hours when music may start a dance ("8-22" means 8 am up to 10 pm). Filming at
 # night sets LILTOKEN_MUSIC_HOURS=0-24 for the shoot.
 MUSIC_HOURS = tuple(int(x) for x in os.environ.get("LILTOKEN_MUSIC_HOURS", "8-22").split("-"))
-RESEARCH_FACE = HOME / "lil-token" / "avatar" / "research.rgb565"
+RESEARCH_FACE = Path(__file__).resolve().parents[1] / "avatar" / "research.rgb565"
 # Google G above the shades while it works in Gmail / Calendar.
-GOOGLE_FACE = HOME / "lil-token" / "avatar" / "google.rgb565"
+GOOGLE_FACE = Path(__file__).resolve().parents[1] / "avatar" / "google.rgb565"
 # Composio mark above the shades while it works in one of the owner's other apps.
-COMPOSIO_FACE = HOME / "lil-token" / "avatar" / "composio.rgb565"
+COMPOSIO_FACE = Path(__file__).resolve().parents[1] / "avatar" / "composio.rgb565"
 FACES = {"default": DEFAULT_FACE, "party": PARTY_FACE, "research": RESEARCH_FACE, "google": GOOGLE_FACE,
          "composio": COMPOSIO_FACE}
 # One look per kind of music (avatar/make_wardrobe.py).
-FACES.update({name: HOME / "lil-token" / "avatar" / f"{name}.rgb565"
+FACES.update({name: Path(__file__).resolve().parents[1] / "avatar" / f"{name}.rgb565"
               for name in ("hiphop", "classical", "electronic", "rock", "jazz", "ambient")})
 # Firmware 19 draws a hat or badge as a small picture over the normal face
 # (57.6 KB against 537.6 KB for a whole face set).
-OVERLAYS = HOME / "lil-token" / "avatar" / "overlays"
+OVERLAYS = Path(__file__).resolve().parents[1] / "avatar" / "overlays"
 SWAY_STOP = re.compile(r"(?i)\b(stop|enough|that'?s enough|quit|cut it out)\b")
 # Speak the agent's answer sentence by sentence while it is being written
 # (gateway say_push / say_wait). 0 goes back to one say() per message.
@@ -1367,7 +1367,7 @@ def main() -> None:
         logging.getLogger(noisy).setLevel(logging.WARNING)
     if not TOKEN:
         # Without it every local process could make the robot talk, listen or
-        # start a coding run. run-brain.sh reads it from ~/.env.
+        # start a coding run. run-brain.sh reads it from the project-local .env.
         log.error("Set STACKCHAN_TOKEN in your local .env before starting.")
         raise SystemExit(78)
     brain = Brain()

@@ -34,6 +34,8 @@ Set `LILTOKEN_MUSIC=1` for local CLAP classification. This downloads model weigh
 
 For presence checks, obtain the YuNet model from the [OpenCV Zoo face-detection project](https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet), inspect its license, and put `face_detection_yunet_2023mar.onnx` in `brain/models/`. Set `LILTOKEN_PRESENCE=1` and optionally `LILTOKEN_EYE_CONTACT=1`. Presence uses the camera locally. Visual questions deliberately send a photo to Claude.
 
+Optional song identification sends a short audio clip to Google. It requires both `LILTOKEN_SONG_NAME=1` and your own `GOOGLE_API_KEY`. Leave it off to keep genre classification local.
+
 ## Your voice and wake phrase
 
 Use a Fish voice you have rights to use. A custom voice requires that provider’s enrollment process. The package contains the face art and speech code. Your voice recordings and enrolled profiles are created locally.

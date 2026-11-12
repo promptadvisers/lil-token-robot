@@ -17,7 +17,7 @@ unless the owner asked. Two layers keep that true here:
    own words asked.
 
 Switches (environment):
-  COMPOSIO_API_KEY            a project key (ak_...), read from ~/.env by
+  COMPOSIO_API_KEY            a project key (ak_...), read from the project-local .env by
                               run-brain.sh.
   COMPOSIO_USER_API_KEY       or, the way Gratis does it for an account with
   COMPOSIO_ORG_ID             no project key: the signed-in user's key,

@@ -250,10 +250,9 @@ class Genre:
 def name_song(path: str) -> str:
     """Ask Gemini what the song is. Sends the ten second clip to Google, so
     it only runs when the owner asks for the name."""
-    env = (Path.home() / ".env").read_text()
-    m = re.search(r'^GOOGLE_API_KEY=["\']?([^"\'\n]+)', env, re.M)
-    if not m:
-        return "no Google key"
+    key = os.environ.get("GOOGLE_API_KEY", "")
+    if os.environ.get("LILTOKEN_SONG_NAME", "0") != "1" or not key:
+        return "Song identification is off. Configure your own Google API key to enable it."
     model = os.environ.get("LILTOKEN_SONG_MODEL", "gemini-3.8-flash")
     body = {"contents": [{"parts": [
         {"inline_data": {"mime_type": "audio/wav", "data": base64.b64encode(Path(path).read_bytes()).decode()}},
@@ -261,7 +260,7 @@ def name_song(path: str) -> str:
                  "song, reply 'Title by Artist'. If you are not sure, reply 'unknown' and nothing else."}]}]}
     req = urllib.request.Request(
         f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-        data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "x-goog-api-key": m.group(1)})
+        data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "x-goog-api-key": key})
     with urllib.request.urlopen(req, timeout=30) as r:
         out = json.load(r)
     return out["candidates"][0]["content"]["parts"][0]["text"].strip()[:120]

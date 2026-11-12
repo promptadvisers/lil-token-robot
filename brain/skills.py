@@ -289,11 +289,13 @@ Gumroad freebies count as downloads, not revenue. Use only the explicitly config
 
 
 async def ask_biz(claude: str, model: str, question: str, history: str, now: str) -> str:
-    cfg = json.dumps({"mcpServers": {"calendly": CALENDLY_MCP}})
+    if os.environ.get("LILTOKEN_BUSINESS", "0") != "1":
+        return "Business access is off. Enable your own adapter first."
+    cfg = json.dumps({"mcpServers": {}})
     prompt = BIZ_PROMPT.format(now=now, history=history, question=question, biz=BIZ, speak=SPEAK_RULES)
     return await run_claude(
         claude, model, prompt,
         "--strict-mcp-config", "--mcp-config", cfg,
-        "--tools", "Bash", "--allowedTools", f"Bash({BIZ}:*)", f"Bash({BIZ} *)", *CALENDLY_TOOLS,
+        "--tools", "Bash", "--allowedTools", f"Bash({BIZ}:*)", f"Bash({BIZ} *)",
         timeout=120,
     )

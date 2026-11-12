@@ -1,7 +1,7 @@
 """Call one Lil Token gateway tool from the shell.
 
 Usage: tok.py <tool> '<json args>'   e.g. tok.py set_volume '{"volume": 90}'
-Uses the always-on gateway at http://127.0.0.1:8767/mcp and STACKCHAN_TOKEN from ~/.env.
+Uses the always-on gateway at http://127.0.0.1:8767/mcp and STACKCHAN_TOKEN from the project-local .env.
 """
 import asyncio, json, pathlib, os, sys
 from dotenv import dotenv_values

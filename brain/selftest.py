@@ -66,8 +66,8 @@ def main() -> None:
         print("[test] waiting for an external trigger", flush=True)
     elif "--tap" in sys.argv:
         print("[test] simulated screen tap", flush=True)
-        subprocess.run([str(Path.home() / ".local/share/uv/tools/stackchan-mcp/bin/python"),
-                        str(Path.home() / "lil-token" / "tok.py"), "simulate_tap"], check=True)
+        subprocess.run([sys.executable,
+                        str(Path(__file__).resolve().parents[1] / "tok.py"), "simulate_tap"], check=True)
     elif "--no-wake" in sys.argv:
         subprocess.run(["curl", "-s", "-X", "POST", "127.0.0.1:8771/wake",
                         "-H", f"Authorization: Bearer {token()}", "-d", "{}"], check=True)
