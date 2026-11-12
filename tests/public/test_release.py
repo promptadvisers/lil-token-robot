@@ -53,6 +53,19 @@ class Defaults(unittest.TestCase):
         result=subprocess.run([sys.executable,str(ROOT/'examples/desk_demo.py')],env={'PATH':os.defpath},capture_output=True,text=True,check=True)
         self.assertIn('Test meeting',result.stdout)
 
+    def test_song_identification_does_not_read_home_credentials(self):
+        import music
+        with mock.patch.dict(os.environ,{},clear=True),mock.patch.object(Path,'read_text',side_effect=AssertionError('unexpected file read')):
+            self.assertIn('off',music.name_song('not-a-real-audio-file'))
+
+    def test_business_fallback_respects_opt_in(self):
+        import asyncio
+        import skills
+        with mock.patch.dict(os.environ,{},clear=True),mock.patch.object(skills,'run_claude') as run:
+            result=asyncio.run(skills.ask_biz('claude','sonnet','sales','','now'))
+            self.assertIn('off',result)
+            run.assert_not_called()
+
     def test_face_payload_sizes(self):
         for name in ['default','party','classical','jazz','rock','research','google']:
             self.assertEqual((ROOT/'avatar'/f'{name}.rgb565').stat().st_size,14*160*120*2)
